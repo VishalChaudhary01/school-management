@@ -60,18 +60,13 @@ export default function ShowSchool() {
               <h2 className="text-xl text-gray-800 font-semibold mb-2">
                 {school.name}
               </h2>
-              <p className="text-gray-700 text-sm">{school.address}</p>
-              <p className="text-gray-600 text-sm">
-                {school.city}, {school.state}
-              </p>
-
-              <p className="text-gray-700 mt-2 text-sm">
-                <span className="font-medium">Phone Number:</span>{' '}
-                {school.contact || 'N/A'}
-              </p>
               <p className="text-gray-700 text-sm">
-                <span className="font-medium">Email Id:</span>{' '}
-                <span className="text-blue-600">{school.email_id}</span>
+                <span className="font-medium">Address: </span>
+                {school.address}
+              </p>
+              <p className="text-gray-600 text-sm">
+                <span className="font-medium">City: </span>
+                {school.city}
               </p>
             </div>
           ))}
