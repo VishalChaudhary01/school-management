@@ -67,6 +67,9 @@ export default function AddSchool() {
         setImagePreview('');
         toast.success(result.message);
         router.push('/');
+      } else {
+        console.error('Error:', error);
+        toast.error(error.message);
       }
     } catch (error) {
       console.error('Error:', error);
