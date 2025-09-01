@@ -1,0 +1,38 @@
+import { prisma } from '@/prisma/db';
+
+export default async function handler(req, res) {
+  if (req.method === 'GET') {
+    try {
+      const data = await prisma.school.findMany();
+      res
+        .status(200)
+        .json({ success: true, message: 'School fetched successfully', data });
+    } catch (error) {
+      console.error('Failed to fetch schools', error);
+      res
+        .status(500)
+        .json({ success: false, message: 'Failed to fetch schools' });
+    }
+  } else if (req.method === 'POST') {
+    try {
+      const data = req.body;
+      const school = await prisma.school.create({
+        data: {
+          ...data,
+        },
+      });
+
+      res.status(201).json({
+        success: true,
+        message: 'School added successfully',
+        data: school,
+      });
+    } catch (error) {
+      console.error('Failed to add school:', error);
+      res.status(500).json({ success: false, message: 'Failed to add school' });
+    }
+  } else {
+    res.setHeader('Allow', ['GET', 'POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
+}
