@@ -1,4 +1,6 @@
-import { prisma } from '@/prisma/db';
+import { authOptions } from '@/lib/auth_options';
+import { prisma } from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -14,11 +16,18 @@ export default async function handler(req, res) {
         .json({ success: false, message: 'Failed to fetch schools' });
     }
   } else if (req.method === 'POST') {
+    const session = await getServerSession(req, res, authOptions);
+    if (!session.user) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Unauthorize user' });
+    }
     try {
       const data = req.body;
       const school = await prisma.school.create({
         data: {
           ...data,
+          userId: session.user.id,
         },
       });
 

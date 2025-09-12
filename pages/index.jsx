@@ -1,10 +1,13 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useSession, signOut, signIn } from 'next-auth/react';
 
 export default function ShowSchool() {
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const fetchSchools = async () => {
@@ -23,8 +26,8 @@ export default function ShowSchool() {
     fetchSchools();
   }, []);
 
-  if (loading) {
-    return <p className="text-center py-10">Loading schools...</p>;
+  if (loading || status === 'loading') {
+    return <p className="text-center py-10">Loading...</p>;
   }
 
   return (
@@ -33,12 +36,29 @@ export default function ShowSchool() {
         <h1 className="text-xl md:text-3xl font-bold text-gray-700">
           School List
         </h1>
-        <button
-          onClick={() => router.push('/addSchool')}
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Add School
-        </button>
+        {session?.user ? (
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => router.push('/addSchool')}
+              className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            >
+              Add School
+            </button>
+            <button
+              onClick={() => signOut()}
+              className="hover:text-blue-600 py-2 px-4 rounded hover:border-blue-600 border border-gray-400"
+            >
+              Log Out
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => router.push('/signin')}
+            className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+          >
+            Sign In
+          </button>
+        )}
       </div>
 
       {schools.length === 0 ? (

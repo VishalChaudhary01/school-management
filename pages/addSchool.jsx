@@ -136,7 +136,7 @@ export default function AddSchool() {
   );
 }
 
-function LabelledInput({
+export function LabelledInput({
   label,
   name,
   type = 'text',

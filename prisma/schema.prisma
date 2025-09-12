@@ -7,6 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String    @unique
+  emailVerified String?
+
+  verificationTokens VerificationToken[]
+  schools       School[]
+}
+
+model VerificationToken {
+  id        Int              @id @default(autoincrement())
+  token     String
+  userId    Int
+  createdAt DateTime         @default(now())
+  expires   DateTime
+
+  user      User             @relation(references: [id], fields: [userId])
+}
+
 model School {
   id       Int     @id @default(autoincrement())
   name     String
@@ -15,5 +35,8 @@ model School {
   state    String
   contact  String
   image    String?
-  email_id String @unique
+  email_id String  @unique
+  userId   Int
+
+  user     User @relation(references: [id], fields: [userId])
 }
