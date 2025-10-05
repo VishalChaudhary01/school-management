@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     if (!session.user) {
       return res
         .status(401)
-        .json({ success: false, message: "Unauthorize user" });
+        .json({ success: false, message: "Unauthorize user " });
     }
     try {
       const data = req.body;
