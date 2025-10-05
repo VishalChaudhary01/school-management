@@ -7,14 +7,23 @@ export default function ShowSchool() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  const [search, setSearch] = useState('');
+
   const { data: session, status } = useSession();
 
-  useEffect(() => {
-    const fetchSchools = async () => {
+   const fetchSchools = async (search = '') => {
+    let res;
       try {
-        const res = await fetch('/api/schools');
+        if (search) {
+          res = await fetch(`/api/schools?name=${search}`);
+        } else {
+res = await fetch('/api/schools');
+        }
+        
+        
         const result = await res.json();
         if (result.success) {
+          console.log("Response:: ", res)
           setSchools(result.data);
         }
       } catch (error) {
@@ -23,8 +32,21 @@ export default function ShowSchool() {
         setLoading(false);
       }
     };
+
+  useEffect(() => {
     fetchSchools();
   }, []);
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    console.log("search", search)
+    const res = await fetchSchools(search);
+
+    // console.log("Response:: ", res)
+
+    // setSchools(res);
+
+  }
 
   if (loading || status === 'loading') {
     return <p className="text-center py-10">Loading...</p>;
@@ -61,6 +83,14 @@ export default function ShowSchool() {
         )}
       </div>
 
+      <div className='space-y-8'>
+        <form onSubmit={handleSubmit}  className='max-w-xl'>
+          <input type='text' value={search} onChange={(e) => setSearch(e.target.value)}  />
+          <button type='submit'>Search</button>
+        </form>
+
+      
+
       {schools.length === 0 ? (
         <p className="text-center">No schools found.</p>
       ) : (
@@ -92,6 +122,8 @@ export default function ShowSchool() {
           ))}
         </div>
       )}
+
+      </div>
     </div>
   );
 }

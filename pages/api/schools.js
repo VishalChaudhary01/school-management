@@ -1,26 +1,26 @@
-import { authOptions } from '@/lib/auth_options';
-import { prisma } from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
+import { authOptions } from "@/lib/auth_options";
+import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     try {
       const data = await prisma.school.findMany();
       res
         .status(200)
-        .json({ success: true, message: 'School fetched successfully', data });
+        .json({ success: true, message: "School fetch successful", data });
     } catch (error) {
-      console.error('Failed to fetch schools', error);
+      console.error("Failed to fetch schools", error);
       res
         .status(500)
-        .json({ success: false, message: 'Failed to fetch schools' });
+        .json({ success: false, message: "Failed to fetch schools" });
     }
-  } else if (req.method === 'POST') {
+  } else if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
     if (!session.user) {
       return res
         .status(401)
-        .json({ success: false, message: 'Unauthorize user' });
+        .json({ success: false, message: "Unauthorize user" });
     }
     try {
       const data = req.body;
@@ -33,15 +33,15 @@ export default async function handler(req, res) {
 
       res.status(201).json({
         success: true,
-        message: 'School added successfully',
+        message: "School added successfully",
         data: school,
       });
     } catch (error) {
-      console.error('Failed to add school:', error);
-      res.status(500).json({ success: false, message: 'Failed to add school' });
+      console.error("Failed to add school:", error);
+      res.status(500).json({ success: false, message: "Failed to add school" });
     }
   } else {
-    res.setHeader('Allow', ['GET', 'POST']);
+    res.setHeader("Allow", ["GET", "POST"]);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
