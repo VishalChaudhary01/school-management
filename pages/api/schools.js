@@ -13,14 +13,14 @@ export default async function handler(req, res) {
       console.error("Failed to fetch schools", error);
       res
         .status(500)
-        .json({ success: false, message: "Failed to fetch schools" });
+        .json({ success: false, message: "Failed to fetch school list" });
     }
   } else if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
     if (!session.user) {
       return res
         .status(401)
-        .json({ success: false, message: "Unauthorize user " });
+        .json({ success: false, message: "Unauthorize user" });
     }
     try {
       const data = req.body;
