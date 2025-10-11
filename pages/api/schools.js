@@ -38,7 +38,9 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       console.error("Failed to add school:", error);
-      res.status(500).json({ success: false, message: "Failed to add school" });
+      res
+        .status(500)
+        .json({ success: false, message: "Error during add school" });
     }
   } else {
     res.setHeader("Allow", ["GET", "POST"]);
