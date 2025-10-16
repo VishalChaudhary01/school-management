@@ -11,18 +11,14 @@ export default async function handler(req, res) {
         message: "All School fetched successfully",
         data,
       });
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "All School fetched successfully",
-          data,
-        });
+      res.status(200).json({
+        success: true,
+        message: "All School fetched successfully",
+        data,
+      });
     } catch (error) {
       console.error("Failed to fetch schools", error);
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to fetch schools" });
+      res.status(500).json({ success: false, message: "Failed to fetch" });
     }
   } else if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
