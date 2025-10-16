@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         data,
       });
     } catch (error) {
-      console.error("Failed to fetch schools", error);
+      console.error("Failed to fetch ", error);
       res.status(500).json({ success: false, message: "Failed to fetch" });
     }
   } else if (req.method === "POST") {
