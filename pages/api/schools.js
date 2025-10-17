@@ -18,7 +18,9 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       console.error("Failed to fetch ", error);
-      res.status(500).json({ success: false, message: "Failed to fetch" });
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to fetch schools" });
     }
   } else if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
