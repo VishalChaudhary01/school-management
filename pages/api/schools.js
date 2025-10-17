@@ -18,7 +18,9 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       console.error("Failed to fetch ", error);
-      res.status(500).json({ success: false, message: "Failed to fetch" });
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to fetchddddddddd" });
     }
   } else if (req.method === "POST") {
     const session = await getServerSession(req, res, authOptions);
@@ -27,6 +29,7 @@ export default async function handler(req, res) {
         .status(401)
         .json({ success: false, message: "Unauthorize User" });
     }
+
     try {
       const data = req.body;
       const school = await prisma.school.create({
